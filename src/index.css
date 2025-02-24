@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+:root {
+    --bg-color: white;
+    --text-color: black;
+    --input-bg: #f3f3f3;
+    --card-bg: white;
+  }
+  
+  .dark {
+    --bg-color: #fdfeff;
+    --text-color: rgb(255, 255, 255);
+    --input-bg: #2d3748;
+    --card-bg: #0b1c39;
+  }
+  
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  

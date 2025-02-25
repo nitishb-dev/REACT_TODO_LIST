@@ -3,7 +3,7 @@
 :root {
     --bg-color: white;
     --text-color: black;
-    --input-bg: #f3f3f3;
+    --input-bg: #a4a3a3;
     --card-bg: white;
   }
   
@@ -11,7 +11,7 @@
     --bg-color: #fdfeff;
     --text-color: rgb(255, 255, 255);
     --input-bg: #2d3748;
-    --card-bg: #0b1c39;
+    --card-bg: #051c43;
   }
   
   body {

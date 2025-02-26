@@ -141,21 +141,24 @@ const Todo = () => {
     });
   };
 
-  const add = () => {
-    const inputText = inputRef.current.value.trim();
-    if (inputText === "") return;
-
-    const newTodo = {
-      id: Date.now(),
-      text: inputText,
-      isComplete: false,
-      timeAdded: getFormattedDate(),
-      completedTime: null,
-    };
-
-    setTodoList((prev) => [...prev, newTodo]);
-    inputRef.current.value = "";
+  const add = (event) => {
+    if (event.type === "click" || event.key === "Enter") {
+      const inputText = inputRef.current.value.trim();
+      if (inputText === "") return;
+  
+      const newTodo = {
+        id: Date.now(),
+        text: inputText,
+        isComplete: false,
+        timeAdded: getFormattedDate(),
+        completedTime: null,
+      };
+  
+      setTodoList((prev) => [...prev, newTodo]);
+      inputRef.current.value = "";
+    }
   };
+  
 
   const deleteTodo = (id) => {
     setTodoList((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
@@ -174,6 +177,15 @@ const Todo = () => {
       )
     );
   };
+
+  const editTodo = (id, newText) => {
+    setTodoList((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, text: newText } : todo
+      )
+    );
+  };
+  
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todoList));
@@ -197,6 +209,7 @@ const Todo = () => {
             className="bg-transparent flex-1 p-3 text-lg focus:outline-none"
             type="text"
             placeholder="Add a task..."
+            onKeyDown={add}
           />
           <button
             onClick={add}
@@ -218,6 +231,7 @@ const Todo = () => {
                 toggle={toggle}
                 timeAdded={item.timeAdded}
                 completedTime={item.completedTime}
+                editTodo={editTodo}
               />
             ))
           ) : (

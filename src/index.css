@@ -8,10 +8,10 @@
   }
   
   .dark {
-    --bg-color: #fdfeff;
-    --text-color: rgb(255, 255, 255);
-    --input-bg: #2d3748;
-    --card-bg: #051c43;
+    --bg-color: #121212;
+    --text-color: #fffefe;
+    --input-bg: #52575f;
+    --card-bg: #133747;
   }
   
   body {
@@ -21,3 +21,4 @@
   }
   
   
+

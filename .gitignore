@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 node_modules/
 dist/
+
+# amplify
+.amplify
+amplify_outputs*
+amplifyconfiguration*

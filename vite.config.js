@@ -8,6 +8,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  base: "/REACT_TODO_LIST",
   server:{
     port:4000
   }

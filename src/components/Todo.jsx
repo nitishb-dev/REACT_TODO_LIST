@@ -140,7 +140,7 @@ import { useRef, useState, useEffect } from "react";
 import { FaPlus, FaMoon, FaSun } from "react-icons/fa";
 import TodoItems from "./TodoItems";
 
-const API_URL = "https://your-api-id.execute-api.your-region.amazonaws.com/dev/tasks"; // Replace with your API Gateway URL
+const API_URL = "https://omh0mbb5td.execute-api.ap-south-1.amazonaws.com/Dev"; // Replace with your API Gateway URL
 
 const Todo = () => {
   const [todoList, setTodoList] = useState([]);

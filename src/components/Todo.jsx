@@ -220,15 +220,54 @@ const Todo = () => {
     }
   };
   
+  const editTodo = async (id, newText, newStartDate, newEndDate) => {
+    const updatedTask = {
+      id, // Ensure ID is sent to identify the task
+      text: newText,
+      startDate: newStartDate,
+      endDate: newEndDate
+    };
+  
+    try {
+      const response = await fetch(`https://your-api-url/tasks`, { // Ensure correct API URL
+        method: "PUT", // Use PUT to update
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedTask)
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update task");
+      }
+  
+      setTodoList((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo.id === id ? { ...todo, ...updatedTask } : todo
+        )
+      );
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+  
 
   const deleteTodo = async (id) => {
     try {
-      await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+      const response = await fetch(`https://omh0mbb5td.execute-api.ap-south-1.amazonaws.com/Dev${id}`, {
+        method: "DELETE"
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to delete task");
+      }
+  
       setTodoList((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
     } catch (error) {
       console.error("Error deleting task:", error);
     }
   };
+  
 
   const toggle = async (id) => {
     setTodoList((prevTodos) =>

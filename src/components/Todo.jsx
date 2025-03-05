@@ -9,19 +9,15 @@
 //   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
 //   const inputRef = useRef();
+//   const startDateRef = useRef();
+//   const endDateRef = useRef();
 
 //   useEffect(() => {
-//     if (theme === "dark") {
-//       document.documentElement.classList.add("dark");
-//     } else {
-//       document.documentElement.classList.remove("dark");
-//     }
+//     document.documentElement.classList.toggle("dark", theme === "dark");
 //     localStorage.setItem("theme", theme);
 //   }, [theme]);
 
-//   const toggleTheme = () => {
-//     setTheme(theme === "light" ? "dark" : "light");
-//   };
+//   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
 
 //   const getFormattedDate = () => {
 //     return new Date().toLocaleString("en-US", {
@@ -38,21 +34,29 @@
 //   const add = (event) => {
 //     if (event.type === "click" || event.key === "Enter") {
 //       const inputText = inputRef.current.value.trim();
-//       if (inputText === "") return;
-  
+//       const startDate = startDateRef.current.value;
+//       const endDate = endDateRef.current.value;
+
+//       if (inputText === "" || !startDate || !endDate) return;
+
 //       const newTodo = {
 //         id: Date.now(),
 //         text: inputText,
 //         isComplete: false,
 //         timeAdded: getFormattedDate(),
 //         completedTime: null,
+//         startDate,
+//         endDate,
 //       };
-  
+
 //       setTodoList((prev) => [...prev, newTodo]);
+
+//       // Clear input fields
 //       inputRef.current.value = "";
+//       startDateRef.current.value = "";
+//       endDateRef.current.value = "";
 //     }
 //   };
-  
 
 //   const deleteTodo = (id) => {
 //     setTodoList((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
@@ -72,14 +76,15 @@
 //     );
 //   };
 
-//   const editTodo = (id, newText) => {
+//   const editTodo = (id, newText, newStartDate, newEndDate) => {
 //     setTodoList((prevTodos) =>
 //       prevTodos.map((todo) =>
-//         todo.id === id ? { ...todo, text: newText } : todo
+//         todo.id === id
+//           ? { ...todo, text: newText, startDate: newStartDate, endDate: newEndDate }
+//           : todo
 //       )
 //     );
 //   };
-  
 
 //   useEffect(() => {
 //     localStorage.setItem("todos", JSON.stringify(todoList));
@@ -95,21 +100,16 @@
 //       </button>
 
 //       <div className="shadow-lg rounded-2xl p-6 w-full max-w-md transition-all" style={{ backgroundColor: "var(--card-bg)" }}>
-//         <h1 className="text-3xl font-bold text-center mb-4">🚀 To-Do List</h1>
+//         <h1 className="text-3xl font-bold flex flex-row items-center justify-center text-center mb-4"><span className="text-2xl">🚀</span>-To-Do List-<span className="text-2xl">🚀</span></h1>
 
-//         <div className="flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "var(--input-bg)" }}>
-//           <input
-//             ref={inputRef}
-//             className="bg-transparent flex-1 p-3 text-lg focus:outline-none"
-//             type="text"
-//             placeholder="Add a task..."
-//             onKeyDown={add}
-//           />
-//           <button
-//             onClick={add}
-//             className="bg-blue-500 hover:bg-blue-600 transition-all p-4 text-white rounded-lg cursor-pointer"
-//           >
-//             <FaPlus />
+//         <div className="flex flex-col space-y-2">
+//           <input ref={inputRef} className="p-2 border rounded text-lg" type="text" placeholder="Task Name..." onKeyDown={add} />
+//           <label htmlFor="startDate">Starting Date</label>
+//           <input id="startDate" ref={startDateRef} className="p-2 border rounded text-lg" type="date" />
+//           <label htmlFor="endDate ">Ending Date</label>
+//           <input id="endDate" ref={endDateRef} className="p-2 border rounded text-lg" type="date" />
+//           <button onClick={add} className="bg-blue-500 hover:bg-blue-600 transition-all p-3 text-white rounded-lg cursor-pointer flex flex-row justify-center items-center">
+//             <FaPlus className="mr-2" /> Add Task
 //           </button>
 //         </div>
 
@@ -118,13 +118,9 @@
 //             todoList.map((item) => (
 //               <TodoItems
 //                 key={item.id}
-//                 text={item.text}
-//                 id={item.id}
-//                 isComplete={item.isComplete}
+//                 {...item}
 //                 deleteTodo={deleteTodo}
 //                 toggle={toggle}
-//                 timeAdded={item.timeAdded}
-//                 completedTime={item.completedTime}
 //                 editTodo={editTodo}
 //               />
 //             ))
@@ -139,14 +135,15 @@
 
 // export default Todo;
 
+
 import { useRef, useState, useEffect } from "react";
 import { FaPlus, FaMoon, FaSun } from "react-icons/fa";
 import TodoItems from "./TodoItems";
 
+const API_URL = "https://your-api-id.execute-api.your-region.amazonaws.com/dev/tasks"; // Replace with your API Gateway URL
+
 const Todo = () => {
-  const [todoList, setTodoList] = useState(
-    JSON.parse(localStorage.getItem("todos")) || []
-  );
+  const [todoList, setTodoList] = useState([]);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   const inputRef = useRef();
@@ -172,7 +169,22 @@ const Todo = () => {
     });
   };
 
-  const add = (event) => {
+  // Fetch tasks from AWS Lambda (DynamoDB)
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        setTodoList(data.tasks || []);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+  const add = async (event) => {
     if (event.type === "click" || event.key === "Enter") {
       const inputText = inputRef.current.value.trim();
       const startDate = startDateRef.current.value;
@@ -190,20 +202,33 @@ const Todo = () => {
         endDate,
       };
 
-      setTodoList((prev) => [...prev, newTodo]);
+      try {
+        await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newTodo),
+        });
 
-      // Clear input fields
-      inputRef.current.value = "";
-      startDateRef.current.value = "";
-      endDateRef.current.value = "";
+        setTodoList((prev) => [...prev, newTodo]);
+        inputRef.current.value = "";
+        startDateRef.current.value = "";
+        endDateRef.current.value = "";
+      } catch (error) {
+        console.error("Error adding task:", error);
+      }
     }
   };
 
-  const deleteTodo = (id) => {
-    setTodoList((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  const deleteTodo = async (id) => {
+    try {
+      await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+      setTodoList((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
   };
 
-  const toggle = (id) => {
+  const toggle = async (id) => {
     setTodoList((prevTodos) =>
       prevTodos.map((todo) =>
         todo.id === id
@@ -215,21 +240,22 @@ const Todo = () => {
           : todo
       )
     );
-  };
 
-  const editTodo = (id, newText, newStartDate, newEndDate) => {
-    setTodoList((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id
-          ? { ...todo, text: newText, startDate: newStartDate, endDate: newEndDate }
-          : todo
-      )
-    );
+    try {
+      await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          isComplete: !todoList.find((todo) => todo.id === id).isComplete,
+          completedTime: !todoList.find((todo) => todo.id === id).isComplete
+            ? getFormattedDate()
+            : null,
+        }),
+      });
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
   };
-
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todoList));
-  }, [todoList]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center transition-all duration-300">
@@ -241,13 +267,15 @@ const Todo = () => {
       </button>
 
       <div className="shadow-lg rounded-2xl p-6 w-full max-w-md transition-all" style={{ backgroundColor: "var(--card-bg)" }}>
-        <h1 className="text-3xl font-bold flex flex-row items-center justify-center text-center mb-4"><span className="text-2xl">🚀</span>-To-Do List-<span className="text-2xl">🚀</span></h1>
+        <h1 className="text-3xl font-bold flex flex-row items-center justify-center text-center mb-4">
+          <span className="text-2xl">🚀</span>-To-Do List-<span className="text-2xl">🚀</span>
+        </h1>
 
         <div className="flex flex-col space-y-2">
           <input ref={inputRef} className="p-2 border rounded text-lg" type="text" placeholder="Task Name..." onKeyDown={add} />
           <label htmlFor="startDate">Starting Date</label>
           <input id="startDate" ref={startDateRef} className="p-2 border rounded text-lg" type="date" />
-          <label htmlFor="endDate ">Ending Date</label>
+          <label htmlFor="endDate">Ending Date</label>
           <input id="endDate" ref={endDateRef} className="p-2 border rounded text-lg" type="date" />
           <button onClick={add} className="bg-blue-500 hover:bg-blue-600 transition-all p-3 text-white rounded-lg cursor-pointer flex flex-row justify-center items-center">
             <FaPlus className="mr-2" /> Add Task
@@ -262,7 +290,6 @@ const Todo = () => {
                 {...item}
                 deleteTodo={deleteTodo}
                 toggle={toggle}
-                editTodo={editTodo}
               />
             ))
           ) : (

@@ -184,14 +184,17 @@ const Todo = () => {
     fetchTasks();
   }, []);
 
-  const add = async (event) => {
+  const add = (event) => {
     if (event.type === "click" || event.key === "Enter") {
       const inputText = inputRef.current.value.trim();
       const startDate = startDateRef.current.value;
       const endDate = endDateRef.current.value;
-
-      if (inputText === "" || !startDate || !endDate) return;
-
+  
+      if (inputText === "" || !startDate || !endDate) {
+        alert("Please enter task details!");
+        return;
+      }
+  
       const newTodo = {
         id: Date.now(),
         text: inputText,
@@ -201,23 +204,22 @@ const Todo = () => {
         startDate,
         endDate,
       };
-
-      try {
-        await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newTodo),
-        });
-
-        setTodoList((prev) => [...prev, newTodo]);
-        inputRef.current.value = "";
-        startDateRef.current.value = "";
-        endDateRef.current.value = "";
-      } catch (error) {
-        console.error("Error adding task:", error);
-      }
+  
+      setTodoList((prev) => {
+        const updatedTodos = [...prev, newTodo];
+        localStorage.setItem("todos", JSON.stringify(updatedTodos)); // Immediate Storage Update
+        return updatedTodos;
+      });
+  
+      console.log("New Task Added:", newTodo); // Debugging Log
+  
+      // Clear input fields
+      inputRef.current.value = "";
+      startDateRef.current.value = "";
+      endDateRef.current.value = "";
     }
   };
+  
 
   const deleteTodo = async (id) => {
     try {

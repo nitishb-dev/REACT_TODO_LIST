@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://omh0mbb5td.execute-api.ap-south-1.amazonaws.com/Dev";
+const API_BASE_URL = "https://omh0mbb5td.execute-api.ap-south-1.amazonaws.com/";
 
 export const fetchTodos = async () => {
   const response = await fetch(`${API_BASE_URL}/todo`);

@@ -9,12 +9,12 @@
 }
 
 .dark {
-  --bg-color: #373333; /* Dark background */
-  --text-color: #e0e0e0; /* Light text for readability */
-  --input-bg: #333; /* Darker gray for input */
-  --card-bg: #292525; /* Dark gray for cards */
-  --primary-color: #90caf9; /* Light blue for contrast */
-  --accent-color: #ffb74d; /* Orange accent */
+  --bg-color: #373333; 
+  --text-color: #e0e0e0; 
+  --input-bg: #333;
+  --card-bg: #292525; 
+  --primary-color: #90caf9; 
+  --accent-color: #ffb74d; 
 }
 
 body {

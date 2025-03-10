@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --text-color: #222; /* Dark text for readability */
-  --input-bg: #450303; /* Light gray input background */
-  --card-bg: #ffffff; /* White card background */
-  --primary-color: #007bff; /* Blue primary color */
-  --accent-color: #ffcc00; /* Yellow accent */
+  --text-color: #222; 
+  --input-bg: #450303; 
+  --card-bg: #ffffff;
+  --primary-color: #007bff;
+  --accent-color: #ffcc00; 
 }
 
 .dark {

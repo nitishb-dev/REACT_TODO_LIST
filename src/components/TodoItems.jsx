@@ -58,5 +58,3 @@ const TodoItems = ({ text, id, isComplete, deleteTodo, toggle, timeAdded, comple
 
 export default TodoItems;
 
-
-

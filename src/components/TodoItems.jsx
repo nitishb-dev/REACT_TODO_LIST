@@ -70,9 +70,9 @@ const TodoItems = ({ text, id, isComplete, deleteTodo, toggle, timeAdded, comple
       
       {isEditing && (
         <div className="flex flex-col mt-2 ml-8">
-          <label className="text-sm text-gray-600">Start Date:</label>
+          <label className="text-sm text-white">Start Date:</label>
           <input type="date" value={newStartDate} onChange={(e) => setNewStartDate(e.target.value)} className="border p-1 rounded" />
-          <label className="text-sm text-gray-600 mt-1">End Date:</label>
+          <label className="text-sm text-white mt-1">End Date:</label>
           <input type="date" value={newEndDate} onChange={(e) => setNewEndDate(e.target.value)} className="border p-1 rounded" />
         </div>
       )}

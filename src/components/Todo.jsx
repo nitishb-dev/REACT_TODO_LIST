@@ -27,15 +27,15 @@ const Todo = () => {
       const response = await apigetTodo();
       console.log("Fetched Todos:", response);
 
-      // Ensure response has a valid body with results
+      
       if (response && response.body && response.body.results) {
-        setTodoList(response.body.results); // Fix here
+        setTodoList(response.body.results); 
       } else {
-        setTodoList([]); // Fallback if no todos found
+        setTodoList([]); 
       }
     } catch (error) {
       console.error("Error fetching todos:", error);
-      setTodoList([]); // Handle errors gracefully
+      setTodoList([]); 
     }
   };
 
@@ -148,14 +148,14 @@ const Todo = () => {
           <input
             id="startDate"
             ref={startDateRef}
-            className="p-2 border rounded text-lg"
+            className="p-2 border rounded text-lg text-white"
             type="date"
           />
           <label htmlFor="endDate">Ending Date</label>
           <input
             id="endDate"
             ref={endDateRef}
-            className="p-2 border rounded text-lg"
+            className="p-2 border rounded text-lg text-white"
             type="date"
           />
           <button

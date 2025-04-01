@@ -92,17 +92,31 @@ const Todo = () => {
     }
   };
 
+  // const toggle = async (id) => {
+  //   const todo = todoList.find((item) => item.id === id);
+  //   if (!todo) return;
+  //   const updatedState = todo.isComplete ? 0 : 1;
+  //   try {
+  //     await apiputTodo(id, { isComplete: updatedState });
+  //     await getTodoFunc();
+  //   } catch (error) {
+  //     console.error("Error toggling todo:", error);
+  //   }
+  // };
   const toggle = async (id) => {
     const todo = todoList.find((item) => item.id === id);
     if (!todo) return;
     const updatedState = todo.isComplete ? 0 : 1;
     try {
-      await apiputTodo(id, { isComplete: updatedState });
+      await apiputTodo(id, {
+        isComplete: updatedState,
+        completedTime: getFormattedDate(),
+      });
       await getTodoFunc();
     } catch (error) {
       console.error("Error toggling todo:", error);
-    }
-  };
+    }
+  };
 
   const editTodo = async (id, newText, newStartDate, newEndDate) => {
     if (!newText.trim() || !newStartDate || !newEndDate) return;

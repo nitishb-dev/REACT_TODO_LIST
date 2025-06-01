@@ -32,6 +32,8 @@ backend/
 ├── putTodo.py # Update existing todo
 └── deleteTodo.py # Delete todo by ID
 
+---
+
 ## 🛠️ Tech Stack
 
 ### Frontend:

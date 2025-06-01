@@ -16,24 +16,6 @@ A full-stack **Serverless Todo List** application built using **React.js**, **AW
 
 ---
 
-## 📁 Project Structure
-
-client/
-├── components/
-│ ├── Todo.js # Main app logic & UI
-│ └── TodoItems.js # Individual todo item logic
-├── api_request.js # Handles all API interactions
-├── App.js
-└── index.js
-
-backend/
-├── getTodo.py # Fetch all todos
-├── postTodo.py # Add a new todo
-├── putTodo.py # Update existing todo
-└── deleteTodo.py # Delete todo by ID
-
----
-
 ## 🛠️ Tech Stack
 
 ### Frontend:

@@ -54,8 +54,6 @@ backend/
 - `PUT` `/deployment` → Update a todo by `id`
 - `DELETE` `/deployment` → Delete a todo by `id`
 
-> ⚠️ Make sure to deploy the Lambda functions with the correct permissions and environment variables for RDS access.
-
 ---
 
 ## 🧑‍💻 How It Works
